@@ -1,10 +1,23 @@
 import java.util.*
 
-fun partitionTo() = TODO()
+fun <T> Iterable<T>.partitionTo(
+            list1:MutableCollection<T>,
+            list2:MutableCollection<T>,
+            predicate: (T)->Boolean) : Pair<Iterable<T>, Iterable<T>> {
+    for (elem in this) {
+        if (predicate(elem)) {
+            list1.add(elem);
+        } else {
+            list2.add(elem);
+        }
+    }
+    return list1 to list2
+}
 
 fun partitionWordsAndLines() {
-    val (words, lines) = listOf("a", "a b", "c", "d e").
-            partitionTo(ArrayList<String>(), ArrayList()) { s -> !s.contains(" ") }
+    val pairs = listOf("a", "a b", "c", "d e").partitionTo(ArrayList<String>(), ArrayList())
+    { s -> !s.contains(" ") }
+    val (words, lines) = pairs
     words == listOf("a", "c")
     lines == listOf("a b", "d e")
 }
